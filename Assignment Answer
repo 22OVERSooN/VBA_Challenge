@@ -41,10 +41,12 @@ If Range("J" & Summary_Table_Row).Value > 0 Then
 Else: Cells(Summary_Table_Row, 10).Interior.ColorIndex = 3
     End If
 
-If Cells(i, 6).Value = 0 And Cells(Summary_Table_Row, 10).Value = 0 Then
+If Cells(i, 6).Value = 0 And Cells(open_num, 3) = 0 Then
   Range("K" & Summary_Table_Row).Value = 0
+ElseIf Cells(open_num, 3) = 0 Then
+   Range("K" & Summary_Table_Row).Value = "N/A"
 Else
-  Range("K" & Summary_Table_Row).Value = Cells(Summary_Table_Row, 10).Value / Cells(i, 3).Value
+   Range("K" & Summary_Table_Row).Value = Cells(Summary_Table_Row, 10).Value / Cells(open_num, 3).Value
    End If
 
    
