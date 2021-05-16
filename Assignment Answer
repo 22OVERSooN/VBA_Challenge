@@ -7,14 +7,14 @@ Dim Ticker_name As String
 Dim Total_Stock As Double
 Total_Stock = 0
 'use this to fill in the small table in order
-Dim Summary_Table_Row As Integer
+Dim Summary_Table_Row As Double
 Summary_Table_Row = 2
 'figure out the lastrow and make i equals to it, need to change each every worksheet
 
-Dim open_num As Long
+Dim open_num As Double
 open_num = 2
 
-Dim i As Long
+Dim i As Double
 LastRow = ActiveSheet.Cells(Rows.Count, 1).End(xlUp).Row
 For i = 2 To LastRow
 
@@ -38,10 +38,14 @@ Range("J" & Summary_Table_Row).Value = Cells(i, 6).Value - Cells(open_num, 3).Va
 
 If Range("J" & Summary_Table_Row).Value > 0 Then
     Cells(Summary_Table_Row, 10).Interior.ColorIndex = 4
-       Else: Cells(Summary_Table_Row, 10).Interior.ColorIndex = 3
+Else: Cells(Summary_Table_Row, 10).Interior.ColorIndex = 3
     End If
-    
-Range("K" & Summary_Table_Row).Value = Cells(Summary_Table_Row, 10).Value / Cells(i, 6).Value
+
+If Cells(i, 6).Value = 0 And Cells(Summary_Table_Row, 10).Value = 0 Then
+  Range("K" & Summary_Table_Row).Value = 0
+Else
+  Range("K" & Summary_Table_Row).Value = Cells(Summary_Table_Row, 10).Value / Cells(i, 3).Value
+   End If
 
    
    Summary_Table_Row = Summary_Table_Row + 1
@@ -81,7 +85,7 @@ max_vol = Application.WorksheetFunction.Max(Columns("L"))
 Cells(4, 17).Value = max_vol
 
 'count the new table's row
-Dim Last_Row As Long
+Dim Last_Row As Double
 Last_Row = ActiveSheet.Cells(Rows.Count, "I").End(xlUp).Row
 For i = 2 To Last_Row
 
@@ -101,4 +105,8 @@ Next i
 Range("Q2:Q3").NumberFormat = "0.00%"
 
 End Sub
+
+
+
+
 
