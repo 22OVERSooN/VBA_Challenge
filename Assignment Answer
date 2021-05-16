@@ -1,5 +1,7 @@
 Sub stock()
 
+For Each ws In Worksheets
+
 'Set Ticker name as string to fill in the small table
 Dim Ticker_name As String
 
@@ -15,38 +17,38 @@ Dim open_num As Double
 open_num = 2
 
 Dim i As Double
-LastRow = ActiveSheet.Cells(Rows.Count, 1).End(xlUp).Row
+LastRow = ws.Cells(Rows.Count, 1).End(xlUp).Row
 For i = 2 To LastRow
 
 'name the column of small table
-Cells(1, 9).Value = "Ticker"
-Cells(1, 10).Value = "Yearly Change"
-Cells(1, 11).Value = "Percent Change"
-Cells(1, 12).Value = "Total Stock Volume"
+ws.Cells(1, 9).Value = "Ticker"
+ws.Cells(1, 10).Value = "Yearly Change"
+ws.Cells(1, 11).Value = "Percent Change"
+ws.Cells(1, 12).Value = "Total Stock Volume"
 
 'start to setup the if formula
-If Cells(i + 1, 1).Value <> Cells(i, 1).Value Then
-  Ticker_name = Cells(i, 1).Value
-  Total_Stock = Total_Stock + Cells(i, 7).Value
+If ws.Cells(i + 1, 1).Value <> ws.Cells(i, 1).Value Then
+  Ticker_name = ws.Cells(i, 1).Value
+  Total_Stock = Total_Stock + ws.Cells(i, 7).Value
 
    'when the ticker name change, put ticker name on column I
-   Range("I" & Summary_Table_Row).Value = Ticker_name
+   ws.Range("I" & Summary_Table_Row).Value = Ticker_name
    'when the ticker name change,put the total volume on column L
-   Range("L" & Summary_Table_Row).Value = Total_Stock
+   ws.Range("L" & Summary_Table_Row).Value = Total_Stock
 
-Range("J" & Summary_Table_Row).Value = Cells(i, 6).Value - Cells(open_num, 3).Value
+ws.Range("J" & Summary_Table_Row).Value = Cells(i, 6).Value - Cells(open_num, 3).Value
 
-If Range("J" & Summary_Table_Row).Value > 0 Then
-    Cells(Summary_Table_Row, 10).Interior.ColorIndex = 4
-Else: Cells(Summary_Table_Row, 10).Interior.ColorIndex = 3
+If ws.Range("J" & Summary_Table_Row).Value > 0 Then
+    ws.Cells(Summary_Table_Row, 10).Interior.ColorIndex = 4
+Else: ws.Cells(Summary_Table_Row, 10).Interior.ColorIndex = 3
     End If
 
-If Cells(i, 6).Value = 0 And Cells(open_num, 3) = 0 Then
-  Range("K" & Summary_Table_Row).Value = 0
-ElseIf Cells(open_num, 3) = 0 Then
-   Range("K" & Summary_Table_Row).Value = "N/A"
+If ws.Cells(i, 6).Value = 0 And ws.Cells(open_num, 3) = 0 Then
+  ws.Range("K" & Summary_Table_Row).Value = 0
+ElseIf ws.Cells(open_num, 3) = 0 Then
+   ws.Range("K" & Summary_Table_Row).Value = "N/A"
 Else
-   Range("K" & Summary_Table_Row).Value = Cells(Summary_Table_Row, 10).Value / Cells(open_num, 3).Value
+   ws.Range("K" & Summary_Table_Row).Value = ws.Cells(Summary_Table_Row, 10).Value / ws.Cells(open_num, 3).Value
    End If
 
    
@@ -56,59 +58,57 @@ Else
    
    open_num = i + 1
 
-ElseIf Cells(i + 1, 1).Value = Cells(i, 1).Value Then
-   Total_Stock = Total_Stock + Cells(i, 7).Value
+ElseIf ws.Cells(i + 1, 1).Value = ws.Cells(i, 1).Value Then
+   Total_Stock = Total_Stock + ws.Cells(i, 7).Value
     
 End If
 
 Next i
-Columns("K").NumberFormat = "0.00%"
+ws.Columns("K").NumberFormat = "0.00%"
 
 'name the column and row name
-Cells(1, 16).Value = "Ticker"
-Cells(1, 17).Value = "Value"
-Cells(2, 15).Value = "Greatest % Increase"
-Cells(3, 15).Value = "Greatest % Decrease"
-Cells(4, 15).Value = "Greatest Total Volume"
+ws.Cells(1, 16).Value = "Ticker"
+ws.Cells(1, 17).Value = "Value"
+ws.Cells(2, 15).Value = "Greatest % Increase"
+ws.Cells(3, 15).Value = "Greatest % Decrease"
+ws.Cells(4, 15).Value = "Greatest Total Volume"
 
 'find the max number
 Dim max_num As Double
-max_num = Application.WorksheetFunction.Max(Columns("K"))
-Cells(2, 17).Value = max_num
+max_num = ws.Application.WorksheetFunction.Max(Columns("K"))
+ws.Cells(2, 17).Value = max_num
 
 'find the min number
 Dim min_num As Double
-min_num = Application.WorksheetFunction.Min(Columns("K"))
-Cells(3, 17).Value = min_num
+min_num = ws.Application.WorksheetFunction.Min(Columns("K"))
+ws.Cells(3, 17).Value = min_num
 
 'find the max number of volume
 Dim max_vol As Double
-max_vol = Application.WorksheetFunction.Max(Columns("L"))
-Cells(4, 17).Value = max_vol
+max_vol = ws.Application.WorksheetFunction.Max(Columns("L"))
+ws.Cells(4, 17).Value = max_vol
 
 'count the new table's row
 Dim Last_Row As Double
-Last_Row = ActiveSheet.Cells(Rows.Count, "I").End(xlUp).Row
+Last_Row = ws.Cells(Rows.Count, "I").End(xlUp).Row
 For i = 2 To Last_Row
 
 'put the number in the small table
-If Cells(i, 11).Value = max_num Then
-Cells(2, 16).Value = Cells(i, 9).Value
+If ws.Cells(i, 11).Value = max_num Then
+ws.Cells(2, 16).Value = ws.Cells(i, 9).Value
 
-ElseIf Cells(i, 11).Value = min_num Then
-Cells(3, 16).Value = Cells(i, 9).Value
+ElseIf ws.Cells(i, 11).Value = min_num Then
+ws.Cells(3, 16).Value = ws.Cells(i, 9).Value
 
-ElseIf Cells(i, 12).Value = max_vol Then
-Cells(4, 16).Value = Cells(i, 9).Value
+ElseIf ws.Cells(i, 12).Value = max_vol Then
+ws.Cells(4, 16).Value = ws.Cells(i, 9).Value
 
 End If
 Next i
 
-Range("Q2:Q3").NumberFormat = "0.00%"
+ws.Range("Q2:Q3").NumberFormat = "0.00%"
+
+Next ws
 
 End Sub
-
-
-
-
 
