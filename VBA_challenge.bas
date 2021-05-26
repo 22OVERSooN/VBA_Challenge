@@ -1,4 +1,3 @@
-
 Sub stock()
 
 For Each ws In Worksheets
@@ -37,7 +36,7 @@ If ws.Cells(i + 1, 1).Value <> ws.Cells(i, 1).Value Then
    'when the ticker name change,put the total volume on column L
    ws.Range("L" & Summary_Table_Row).Value = Total_Stock
 
-ws.Range("J" & Summary_Table_Row).Value = Cells(i, 6).Value - Cells(open_num, 3).Value
+ws.Range("J" & Summary_Table_Row).Value = ws.Cells(i, 6).Value - ws.Cells(open_num, 3).Value
 
 If ws.Range("J" & Summary_Table_Row).Value > 0 Then
     ws.Cells(Summary_Table_Row, 10).Interior.ColorIndex = 4
@@ -112,4 +111,3 @@ ws.Range("Q2:Q3").NumberFormat = "0.00%"
 Next ws
 
 End Sub
-
